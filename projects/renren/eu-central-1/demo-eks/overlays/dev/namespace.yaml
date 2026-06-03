@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   labels:
     istio-injection: enabled
-  name: renren-stg
+  name: renren
 spec:
   finalizers:
   - kubernetes

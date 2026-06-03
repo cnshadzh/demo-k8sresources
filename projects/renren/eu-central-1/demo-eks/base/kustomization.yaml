@@ -4,11 +4,6 @@ resources:
 - configmap.yaml
 - secret.yaml
 
-commonAnnotations:
-  legocn/cluster: ideas
-  legocn/escalation: ted.zhang@LEGO.com
-  legocn/layer: project
-
 commonLabels:
   project: ideas
 

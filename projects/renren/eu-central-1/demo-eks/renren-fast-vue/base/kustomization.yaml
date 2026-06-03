@@ -7,16 +7,6 @@ resources:
 - secret.yaml
 - svc.yaml
 
-commonAnnotations:
-  legocn/cluster: stg-shopper-eks
-  legocn/escalation: shirley.xiong@LEGO.com
-  legocn/jira: CDTDEVOPS-4561
-  legocn/layer: application
-  legocn/maintainer: shirley.xiong@LEGO.com
-  legocn/risk: RISK
-  legocn/support: SUPPORT
-  legocn/tracing: TRACING
-
 commonLabels:
   app: renren-fast-vue
   monitor: "true"

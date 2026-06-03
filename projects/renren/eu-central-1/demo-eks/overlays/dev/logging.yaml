@@ -3,10 +3,10 @@ apiVersion: logging.banzaicloud.io/v1beta1
 kind: Output
 metadata:
   name: renren-es-output
-  namespace: renren-stg
+  namespace: renren-dev
 spec:
   elasticsearch:
-    host: dorametrics-poc.es.eu-central-1.aws.ece.thelegogroup.cn
+    host: demo.es.eu-central-1.aws.ece.demo.cn
     port: 443
     scheme: https
     ssl_verify: false
@@ -18,8 +18,8 @@ spec:
           key: ES_PASSWORD
     logstash_format: false
     data_stream_enable: true
-    data_stream_name: stg-shopper-eks.${tag[1]}.${tag[3]}
-    data_stream_template_name: stg-shopper-eks
+    data_stream_name: dev-demo-eks.${tag[1]}.${tag[3]}
+    data_stream_template_name: dev-demo-eks
     include_timestamp: true
     time_key: "@timestamp"
     reload_connections: false
@@ -42,10 +42,10 @@ apiVersion: logging.banzaicloud.io/v1beta1
 kind: Output
 metadata:
  name: renren-s3-output
- namespace: renren-stg
+ namespace: renren-dev
 spec:
  s3:
-   s3_bucket: lego-renren-app-shopper-stg-logging
+   s3_bucket: demo-renren-app-demo-dev-logging
    s3_region: eu-central-1
    path: logs/${tag}/%Y/%m/%d/
    buffer:

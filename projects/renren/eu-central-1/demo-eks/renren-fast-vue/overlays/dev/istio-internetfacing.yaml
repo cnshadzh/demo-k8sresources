@@ -2,26 +2,26 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: ideas-portal-fe-internet
+  name: renren-fast-vue-internet
 spec:
   gateways:
   - istio-system/internet-gw
   hosts:
-  - ideas.stg.lego.cn
+  - renren.dev.demo.cn
   http:
   - match:
     - port: 80
       uri:
-        prefix: /portal-ideas-fe 
+        prefix: /portal
     - port: 443
       uri:
-        prefix: /portal-ideas-fe 
+        prefix: /portal 
     rewrite:
        uri: " "
     retries: {}
     route:
     - destination:
-        host: ideas-portal-fe
+        host: renren-fast-vue
         port:
           number: 80
         subset: stable
