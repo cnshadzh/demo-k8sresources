@@ -1,16 +1,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: renren-stg
+namespace: renren-dev
 
 images:
 - name: 984601295324.dkr.ecr.eu-central-1.amazonaws.com/renren/renren-fast-vue
   newName: 984601295324.dkr.ecr.eu-central-1.amazonaws.com/renren/renren-fast-vue
-  newTag: stg-fc55f5dc-45
+  newTag: dev-fc55f5dc
 
 # - hpa.yaml
 resources:
 - ../../base
+- pdb.yaml
 - hpa.yaml
 - serviceaccount.yaml
 - logging.yaml
@@ -20,7 +21,7 @@ resources:
 - istio-internetfacing.yaml
 
 commonLabels:
-  env: stg
+  env: dev
 
 patches:
 - path: dep-version-patch.yaml
@@ -45,11 +46,4 @@ secretGenerator:
   envs:
   - app-secrets.txt
   name: renren-fast-vue-secrets
-  type: Opaque
-- behavior: create
-  files:
-  - application-secret-files.yaml
-  name: renren-fast-vue-secret-files
-  options:
-    disableNameSuffixHash: true
   type: Opaque
