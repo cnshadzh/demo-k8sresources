@@ -1,0 +1,27 @@
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Flow
+metadata:
+  name: renren-fast-vue-flow
+  namespace: renren-dev
+spec:
+  filters:
+  - tag_normaliser:
+      format: dev-demo-eks.${namespace_name}.${labels.app}.${container_name}
+  - parser:
+      parse:
+        type: none
+      remove_key_name_field: true
+      reserve_data: true
+      emit_invalid_record_to_error: false
+  localOutputRefs:
+  - renren-es-output
+  - renren-s3-output
+  match:
+  - exclude:
+      container_names:
+        - istio-proxy
+        - istio-init
+  - select:
+      labels:
+        app: renren-fast-vue

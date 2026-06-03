@@ -1,0 +1,14 @@
+ARCHETYPE=maven21
+SPRING_APPLICATION_NAME=renren-fast
+MYSQL_URL=jdbc:mysql://stg-renren-rds.csktehg0s1lk.rds.eu-central-1.amazonaws.com:3306/renren?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+MYSQL_USERNAME=admin
+REDIS_ENDPOINT=clustercfg.stg-renren-redis-cluster.uvxbfg.cnw1.cache.amazonaws.com
+REDIS_PORT=6379
+KAFKA_SERVERS=b-3.stgmembershipm.s89wr0.c4.kafka.eu-central-1.amazonaws.com:9092,b-2.stgmembershipm.s89wr0.c4.kafka.eu-central-1.amazonaws.com:9092,b-1.stgmembershipm.s89wr0.c4.kafka.eu-central-1.amazonaws.com:9092
+TRANSFER_BUCKET_NAME=lego-renren-app-shopper-stg-cdn
+BUCKET_PATH=public/b702db/a7b6ed
+CDN_URL=https://cdt-se-stg-assets.demo.cn/b702db/a7b6ed
+ALIYUN_MODERATION_SERVICES=ugc_moderation_byllm, comment_detection_pro
+XXL_JOB_ADMIN_ADDRESS=http://xxl-job-admin.membership-stg.svc:7031/xxl-job-admin
+MEMBER_API_HOST=https://membership.stg.legocnaws.thelegogroup.cn/
+GLANCE_MODULE_DOWNGRADE_FLAG=false

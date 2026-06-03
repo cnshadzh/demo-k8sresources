@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- app-rolebinding.yaml
+- deployment.yaml
+- configmap.yaml
+- secret.yaml
+- svc.yaml
+
+commonAnnotations:
+  legocn/cluster: stg-shopper-eks
+  legocn/escalation: ted.zhang@LEGO.com
+  legocn/jira: CDTDEVOPS-4518
+  legocn/layer: application
+  legocn/maintainer: leon.zhao@LEGO.com
+  legocn/risk: RISK
+  legocn/support: SUPPORT
+  legocn/tracing: TRACING
+
+commonLabels:
+  app: renren-fast
+  monitor: "true"
+  project: renren
+  stage: release
+
+configMapGenerator:
+- name: renren-fast-configmap
+  behavior: merge
+  envs:
+  - app-configmap.txt
+- name: renren-fast-configuration
+  behavior: merge
+  files:
+  - application.yaml
+
+secretGenerator:
+- name: renren-fast-secrets
+  behavior: merge
+  envs:
+  - app-secrets.txt
+  type: Opaque

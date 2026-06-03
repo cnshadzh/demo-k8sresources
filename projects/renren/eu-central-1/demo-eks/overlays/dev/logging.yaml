@@ -1,0 +1,54 @@
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Output
+metadata:
+  name: renren-es-output
+  namespace: renren-stg
+spec:
+  elasticsearch:
+    host: dorametrics-poc.es.eu-central-1.aws.ece.thelegogroup.cn
+    port: 443
+    scheme: https
+    ssl_verify: false
+    user: eks
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: project-secrets
+          key: ES_PASSWORD
+    logstash_format: false
+    data_stream_enable: true
+    data_stream_name: stg-shopper-eks.${tag[1]}.${tag[3]}
+    data_stream_template_name: stg-shopper-eks
+    include_timestamp: true
+    time_key: "@timestamp"
+    reload_connections: false
+    reconnect_on_error: true
+    reload_on_failure: false
+    buffer:
+      chunk_full_threshold: "0.9"
+      flush_interval: 5s
+      flush_mode: interval
+      flush_thread_count: 4
+      overflow_action: drop_oldest_chunk
+      retry_max_interval: "30"
+      retry_timeout: 1m
+      retry_type: exponential_backoff
+      timekey: 1m
+      timekey_wait: 30s
+      timekey_use_utc: true
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Output
+metadata:
+ name: renren-s3-output
+ namespace: renren-stg
+spec:
+ s3:
+   s3_bucket: lego-renren-app-shopper-stg-logging
+   s3_region: eu-central-1
+   path: logs/${tag}/%Y/%m/%d/
+   buffer:
+     timekey: 10m
+     timekey_wait: 30s
+     timekey_use_utc: true

@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: renren-fast-vue-dr
+spec:
+  host: renren-fast-vue
+  subsets:
+  - labels:
+      stage: canary
+    name: canary
+  - labels:
+      stage: release
+    name: stable
+  trafficPolicy:
+    connectionPool:
+      http:
+        idleTimeout: 300s

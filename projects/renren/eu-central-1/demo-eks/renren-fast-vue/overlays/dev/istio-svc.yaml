@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: renren-fast-vue-svc
+spec:
+  hosts:
+  - renren-fast-vue
+  http:
+  - match:
+    - port: 80
+    - port: 443
+    retries: {}
+    route:
+    - destination:
+        host: renren-fast-vue
+        port:
+          number: 80
+        subset: stable
+      weight: 100
+  - match:
+    - port: 8000
+    retries: {}
+    route:
+    - destination:
+        host: renren-fast-vue
+        port:
+          number: 8000
+        subset: stable
+      weight: 100
+  - match:
+    - port: 9090
+    retries: {}
+    route:
+    - destination:
+        host: renren-fast-vue
+        port:
+          number: 9090
+        subset: stable
+      weight: 100

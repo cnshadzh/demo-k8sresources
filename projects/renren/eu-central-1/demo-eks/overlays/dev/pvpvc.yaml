@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: renren-efs-pv
+  labels:
+    pv: renren-efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-02735d5c361d1f7e4:/shared
+  mountOptions:
+  - tls
+  - iam
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: renren-efs-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      pv: renren-efs-pv

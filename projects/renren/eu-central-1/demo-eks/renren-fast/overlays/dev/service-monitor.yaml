@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: renren-fast-servicemonitor
+spec:
+  fallbackScrapeProtocol: PrometheusText0.0.4
+  jobLabel: renren-fast-renren-dev
+  selector:
+    matchLabels:
+      app: renren-fast
+  namespaceSelector:
+    matchNames:
+    - renren-dev
+  endpoints:
+  - port: metrics
+    path: /actuator/prometheus
+    interval: 30s
+    metricRelabelings:
+    - action: replace
+      regex: (.*)
+      replacement: k8s
+      separator: ;
+      targetLabel: source
+    - sourceLabels: [__name__]
+      regex: (lettuce_command_firstresponse_seconds_bucket|apiserver_request_duration_seconds_bucket)
+      action: drop
+    - sourceLabels: [le]
+      regex: (0.1|0.2|0.5|1.0|3.0|5.0|10.0|\+Inf)|
+      action: keep
+    - action: replace
+      regex: (.*)
+      replacement: renren-dev
+      targetLabel: product

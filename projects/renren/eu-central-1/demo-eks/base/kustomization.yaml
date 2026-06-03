@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- configmap.yaml
+- secret.yaml
+
+commonAnnotations:
+  legocn/cluster: ideas
+  legocn/escalation: ted.zhang@LEGO.com
+  legocn/layer: project
+
+commonLabels:
+  project: ideas
+
+configMapGenerator:
+- name: project-configmap
+  behavior: merge
+  envs:
+  - project-configmap.txt
+
+secretGenerator:
+- name: project-secrets
+  behavior: merge
+  envs:
+  - project-secrets.txt
+  type: Opaque

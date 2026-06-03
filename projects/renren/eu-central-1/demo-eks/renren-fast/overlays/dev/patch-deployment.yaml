@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: renren-fast
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    spec:
+      containers:
+      - env:
+        - name: APP_ENV
+          value: dev
+        - name: APP_MAX_CPU_QUOTA
+          valueFrom:
+            resourceFieldRef:
+              containerName: renren-fast
+              resource: limits.cpu
+        - name: APP_MAX_MEMORY_QUOTA
+          valueFrom:
+            resourceFieldRef:
+              containerName: renren-fast
+              resource: limits.memory
+        - name: APP_MIN_CPU_QUOTA
+          valueFrom:
+            resourceFieldRef:
+              containerName: renren-fast
+              resource: requests.cpu
+        - name: APP_MIN_MEMORY_QUOTA
+          valueFrom:
+            resourceFieldRef:
+              containerName: renren-fast
+              resource: requests.memory
+        envFrom:
+        - configMapRef:
+            name: project-configmap
+            optional: true
+        - secretRef:
+            name: project-secrets
+            optional: true
+        - configMapRef:
+            name: renren-fast-configmap
+            optional: false
+        - secretRef:
+            name: renren-fast-secrets
+            optional: false
+        name: renren-fast
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1024Mi
+          requests:
+            cpu: "0.5"
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /init
+          name: init-volume
+        - mountPath: /efs
+          name: efs-volume
+        - mountPath: /var/run/secrets/app/
+          name: app-secret-files
+          readOnly: true
+      serviceAccount: renren-fast-sa
+      serviceAccountName: renren-fast-sa
+      nodeSelector:
+        project: renren
+      volumes:
+      - name: init-volume
+        emptyDir: {}
+      - name: efs-volume
+        persistentVolumeClaim:
+          readOnly: true
+          claimName: renren-efs-claim
+      - configMap:
+          defaultMode: 420
+          name: renren-fast-configuration
+          optional: true
+        name: app-configuration
+      - configMap:
+          defaultMode: 420
+          name: renren-fast-configmap
+        name: app-configmap
+      - secret:
+          defaultMode: 420
+          secretName: renren-fast-secrets
+        name: app-secrets
+      - secret:
+          defaultMode: 420
+          secretName: renren-fast-secret-files
+          optional: true
+        name: app-secret-files
+      - configMap:
+          defaultMode: 420
+          name: project-configmap
+          optional: true
+        name: project-configmap
+      - secret:
+          defaultMode: 420
+          secretName: project-secrets
+          optional: true
+        name: project-secrets

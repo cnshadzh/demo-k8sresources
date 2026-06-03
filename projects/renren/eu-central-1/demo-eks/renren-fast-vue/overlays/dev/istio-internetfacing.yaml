@@ -1,0 +1,28 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ideas-portal-fe-internet
+spec:
+  gateways:
+  - istio-system/internet-gw
+  hosts:
+  - ideas.stg.lego.cn
+  http:
+  - match:
+    - port: 80
+      uri:
+        prefix: /portal-ideas-fe 
+    - port: 443
+      uri:
+        prefix: /portal-ideas-fe 
+    rewrite:
+       uri: " "
+    retries: {}
+    route:
+    - destination:
+        host: ideas-portal-fe
+        port:
+          number: 80
+        subset: stable
+      weight: 100

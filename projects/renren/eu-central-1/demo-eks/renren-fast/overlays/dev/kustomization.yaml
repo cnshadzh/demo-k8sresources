@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: renren-dev
+
+images:
+- name: 984601295324.dkr.ecr.eu-central-1.amazonaws.com/renren/renren-fast
+  newName: 984601295324.dkr.ecr.eu-central-1.amazonaws.com/renren/renren-fast
+  newTag: dev-199ef13d
+
+# - hpa.yaml
+resources:
+- ../../base
+- hpa.yaml
+- serviceaccount.yaml
+- logging.yaml
+- service-monitor.yaml
+- istio-dr.yaml
+- istio-svc.yaml
+- istio-internal.yaml
+
+
+commonLabels:
+  env: dev
+
+patches:
+- path: dep-version-patch.yaml
+  target:
+    kind: Deployment
+
+patchesStrategicMerge:
+- patch-deployment.yaml
+
+configMapGenerator:
+- behavior: merge
+  envs:
+  - app-configmap.txt
+  name: renren-fast-configmap
+- behavior: merge
+  files:
+  - application.yaml
+  name: renren-fast-configuration
+
+secretGenerator:
+- behavior: merge
+  envs:
+  - app-secrets.txt
+  name: renren-fast-secrets
+  type: Opaque

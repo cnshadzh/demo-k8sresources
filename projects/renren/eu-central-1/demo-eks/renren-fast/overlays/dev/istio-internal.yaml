@@ -1,0 +1,28 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: renren-fast-internal
+spec:
+  gateways:
+  - istio-system/internal-gw
+  hosts:
+  - renren.dev.demo-int.cn
+  http:
+  - match:
+    - port: 80
+      uri:
+        prefix: /renren
+    - port: 443
+      uri:
+        prefix: /renren
+    rewrite:
+       uri: " "
+    retries: {}
+    route:
+    - destination:
+        host: renren-fast
+        port:
+          number: 80
+        subset: stable
+      weight: 100
